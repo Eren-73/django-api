@@ -3,8 +3,7 @@ from django.shortcuts import render
 import  api
 
 
-def dashboard(request):
-
-    days, rates = api.get_rates(currencies=["USD"], days=30)
-    return render(request,"index.html",context={"data": rates["USD"],
+def dashboard(request, days_range = 5  , currencies = "CAD"):
+    days, rates = api.get_rates(currencies=currencies.split(","), days=days_range)
+    return render(request,"index.html",context={"data": rates["CHF"],
                                                 "days_labels": days})
