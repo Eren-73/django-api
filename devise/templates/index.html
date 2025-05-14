@@ -8,27 +8,48 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="row">
+                <div class="col">
+                     <h1 >Tableau de bord - {{ page_label }}</h1>
+                <a href="{% url 'home' days_range=7 currencies=currencies   %}" class="btn btn-secondary">Semaine</a>
+                <a href="{% url 'home' days_range=30 currencies=currencies   %}" class="btn btn-secondary">Mois</a>
+                <a href="{% url 'home' days_range=360 currencies=currencies   %}" class="btn btn-secondary">Année</a>
+                </div>
 
-<div class="row justify-content-center">
-    <div class="col-md-10 col-lg-10">
-        <canvas id="chart"></canvas>
+            </div>
+        </div>
+    <div class="row justify-content-center">
+        {%for currency,rates in data.items  %}
+            <div class="col-md-10 col-lg-6 ">
+                <canvas id="chart-{{currency}}"></canvas>
+            </div>
+        {% endfor %}
     </div>
-</div>
+
+    </div>
+
+
+
+
 
 <script>
-    var ctx = document.getElementById("chart").getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: {{ days_labels | safe }},
-            datasets: [{
-                label: "EUR",
-                data: {{ data | safe }},
-                fill: true,
-                borderColor: 'rgb(255,128,128)'
-            }]
-        }
-    });
+    {%for currency,rates in data.items%}
+        var ctx = document.getElementById("chart-{{currency}}").getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ days_labels | safe }},
+                datasets: [{
+                    label: "{{ currency }}",
+                    data: {{ rates | safe }},
+                    fill: true,
+                    borderColor: 'rgb(255,128,128)'
+                }]
+            }
+        });
+    {%endfor%}
 </script>
 
 </body>
