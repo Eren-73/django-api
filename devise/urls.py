@@ -4,5 +4,6 @@ from django.urls import path
 from devise import views
 
 urlpatterns = [
-  path("" , views.dashboard, name = "index"),
-  path("days=<int:days_range>&currencies=<str:currencies>/", views.dashboard, name="home"),]
+    path("", views.index, name="index"),
+    path("<int:days_range>/<str:currencies>/", views.dashboard, name="home"),
+]
